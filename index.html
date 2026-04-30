@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Joshua &amp; Freeda — Wedding Invitation · 16 May 2026</title>
+  <meta name="description" content="You're invited to celebrate the wedding of Joshua &amp; Catherin Freeda on 16 May 2026 in Thuvarankurichi, Trichy.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Joshua &amp; Freeda — Wedding Invitation">
+  <meta property="og:description" content="Join us on 16 May 2026 · Thuvarankurichi, Trichy · A celebration of love.">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%231E3D28'/><text x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='13' fill='%23F2EEE4'>J%26F</text></svg>">
+  <style>
+    :root {
+      --deep:   #F2EEE4;
+      --warm:   #E8E2D6;
+      --amber:  #4A7858;
+      --aglow:  rgba(74,120,88,0.30);
+      --ashine: #6B9E78;
+      --ivory:  #2C3B2E;
+      --rose:   #B56B5A;
+      --teal:   #5A8C70;
+      --sand:   #8BAA8F;
+      --faded:  rgba(44,59,46,0.88);
+      --soft:   rgba(44,59,46,0.96);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body, html {
+      width:100%; height:100%;
+      overflow:hidden;
+      font-family:'Lato', sans-serif;
+      background: var(--deep);
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg {
+      position:fixed; inset:0; z-index:0;
+      background:
+        radial-gradient(ellipse at 14% 82%, rgba(100,160,90,0.10) 0%, transparent 52%),
+        radial-gradient(ellipse at 84% 16%, rgba(130,180,110,0.09) 0%, transparent 52%),
+        radial-gradient(ellipse at 50% 50%, rgba(160,200,150,0.06) 0%, transparent 68%),
+        #F2EEE4;
+    }
+
+    /* ── STAR CANVAS ── */
+    #star-canvas { position:fixed; inset:0; pointer-events:none; z-index:1; }
+
+    /* ── PARTICLE CANVAS ── */
+    #particle-canvas { position:fixed; inset:0; pointer-events:none; z-index:100; }
+
+    /* ── PAGE FLASH ── */
+    #page-flash {
+      position:fixed; inset:0; z-index:50; pointer-events:none;
+      background: radial-gradient(ellipse at 50% 48%,
+        rgba(130,190,120,0.18) 0%,
+        rgba(160,210,150,0.08) 40%,
+        transparent 72%);
+      opacity:0; transition:opacity .18s ease;
+    }
+    #page-flash.lit { opacity:1; }
+
+    /* ── PAGES ── */
+    .page {
+      position:fixed; inset:0;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center; padding:68px 28px 72px; z-index:10;
+      opacity:0; visibility:hidden;
+      pointer-events:none;
+      transform: scale(0.95) translateY(20px);
+      filter: blur(3px);
+      transition:
+        opacity .65s cubic-bezier(.22,1,.36,1),
+        transform .65s cubic-bezier(.22,1,.36,1),
+        filter .52s ease,
+        visibility 0s .65s;
+    }
+    .page.active {
+      opacity:1; visibility:visible;
+      pointer-events:auto;
+      transform: scale(1) translateY(0);
+      filter:blur(0);
+      transition:
+        opacity .65s cubic-bezier(.22,1,.36,1),
+        transform .65s cubic-bezier(.22,1,.36,1),
+        filter .52s ease,
+        visibility 0s 0s;
+    }
+    .page.active.from-below  { opacity:0; transform:scale(0.95) translateY(20px); filter:blur(3px); }
+    .page.active.from-above  { opacity:0; transform:scale(0.95) translateY(-20px); filter:blur(3px); }
+    .page.leaving-up   { opacity:0; transform:scale(0.95) translateY(-20px); filter:blur(3px); }
+    .page.leaving-down { opacity:0; transform:scale(0.95) translateY(20px); filter:blur(3px); }
+
+    @media (max-width:520px) {
+      .page { transform:scale(0.95) translateY(14px); filter:blur(3px); }
+      .page.active { transform:scale(1) translateY(0); filter:blur(0); }
+      .page.active.from-below  { transform:scale(0.95) translateY(14px); filter:blur(3px); }
+      .page.active.from-above  { transform:scale(0.95) translateY(-14px); filter:blur(3px); }
+      .page.leaving-up   { transform:scale(0.95) translateY(-14px); filter:blur(3px); }
+      .page.leaving-down { transform:scale(0.95) translateY(14px); filter:blur(3px); }
+    }
+
+    /* ── NAV DOTS ── */
+    .page-dots {
+      position:fixed; top:22px; left:50%; transform:translateX(-50%);
+      display:flex; align-items:center; gap:8px; z-index:200;
+    }
+    .dot {
+      height:6px; border-radius:3px; cursor:pointer;
+      width:6px; background:rgba(74,120,88,0.22);
+      transition:width .4s ease, background .4s ease;
+    }
+    .dot.active { width:22px; background:var(--amber); }
+
+    /* ── BACK BUTTON ── */
+    #back-btn {
+      position:fixed; top:14px; left:18px;
+      width:36px; height:36px; border-radius:50%;
+      border:1px solid var(--aglow); background:transparent;
+      color:var(--amber); display:none; align-items:center;
+      justify-content:center; z-index:200; cursor:pointer;
+      font-size:.95rem; transition:background .2s; padding:0;
+    }
+    #back-btn.visible { display:flex; }
+    #back-btn:active { background:rgba(74,120,88,0.10); }
+
+    /* ── SHARED ── */
+    .amber-line {
+      width:60px; height:1px;
+      background:linear-gradient(90deg, transparent, var(--amber), transparent);
+      margin:13px auto;
+    }
+    .ornament { font-size:.88rem; color:var(--amber); opacity:.55; letter-spacing:7px; }
+
+    /* ── BUTTON ── */
+    .btn {
+      font-family:'Lato', sans-serif;
+      font-size:.74rem; font-weight:700; letter-spacing:4px; text-transform:uppercase;
+      color:var(--amber); background:transparent;
+      border:1px solid var(--aglow); padding:16px 44px;
+      cursor:pointer; margin-top:36px;
+      transition:background .3s, border-color .3s;
+      animation:fadeUp .8s ease .5s both;
+    }
+    .btn:active { background:rgba(74,120,88,0.10); border-color:rgba(74,120,88,0.55); }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity:0; transform:scale(.94); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    @keyframes slideIn {
+      from { transform:translateX(-18px); opacity:0; }
+      to   { transform:translateX(0); opacity:1; }
+    }
+
+    /* ── PAGE 1: COVER ── */
+    .cover-emblem {
+      width: clamp(90px, 18vw, 118px);
+      height: clamp(90px, 18vw, 118px);
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; margin-bottom:32px;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(140,190,120,0.34), rgba(24,54,34,0.94) 60%),
+        linear-gradient(145deg, rgba(70,120,80,0.30), rgba(160,200,140,0.22));
+      box-shadow:0 0 60px rgba(74,120,88,0.28), 0 0 120px rgba(74,120,88,0.12);
+      animation:fadeUp .8s ease .1s both;
+      overflow:visible;
+    }
+    .emblem-ring-svg {
+      position:absolute; inset:-28px;
+      pointer-events:none; z-index:2; overflow:visible;
+    }
+    .emblem-mono {
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      pointer-events:none; overflow:visible;
+    }
+    .emblem-text {
+      font-family:'Dancing Script', cursive;
+      font-size:clamp(3.2rem, 12vw, 4.2rem);
+      font-weight:700;
+      letter-spacing:-2px;
+      background:linear-gradient(160deg, #FBF0DC 18%, #E8C09A 55%, #C49A6C 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      filter:drop-shadow(0 2px 10px rgba(0,0,0,0.5));
+      line-height:1;
+    }
+    .emblem-heart {
+      font-size:clamp(.95rem, 3vw, 1.2rem);
+      color:#E07B72;
+      -webkit-text-fill-color:#E07B72;
+      text-shadow:0 1px 6px rgba(212,100,90,0.55);
+      animation:heartbeat 2.6s ease-in-out infinite;
+      margin:0 2px;
+    }
+    @keyframes heartbeat {
+      0%,100%{transform:scale(1);opacity:.7}
+      14%{transform:scale(1.22);opacity:1}
+      28%{transform:scale(1);opacity:.7}
+      42%{transform:scale(1.12);opacity:.9}
+    }
+
+    .couple-name {
+      font-family:'Playfair Display', serif;
+      font-style:italic; font-weight:400;
+      font-size:clamp(2.5rem, 11vw, 3.8rem);
+      color:var(--ivory); line-height:1.15; letter-spacing:2px;
+      text-shadow:0 2px 16px rgba(0,0,0,0.3);
+      margin-top:12px;
+      animation:fadeUp .8s ease .2s both;
+    }
+    .invite-line {
+      font-family:'Lato', sans-serif;
+      font-size:.78rem; font-weight:500; letter-spacing:4px; text-transform:uppercase;
+      color:var(--soft); margin-top:18px;
+      animation:fadeUp .8s ease .35s both;
+    }
+    .poem-block {
+      font-family:'Playfair Display', serif;
+      font-style:italic; font-weight:400; font-size:1.12rem;
+      color:rgba(44,59,46,0.96); line-height:1.52;
+      margin-top:28px; max-width:300px;
+      border-top:1px solid rgba(74,120,88,0.22);
+      padding-top:22px;
+      animation:fadeUp .8s ease .45s both;
+    }
+
+    /* ── SWIPE HINT ── */
+    .swipe-hint {
+      position:absolute; bottom:80px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+      pointer-events:none;
+      animation:swipeHintLife 4s ease 1.8s both;
+    }
+    @keyframes swipeHintLife {
+      0%   { opacity:0; transform:translateX(-50%) translateY(6px); }
+      15%  { opacity:1; transform:translateX(-50%) translateY(0); }
+      70%  { opacity:1; }
+      100% { opacity:0; }
+    }
+    .swipe-hint-arrow {
+      display:flex; gap:4px;
+      animation:swipeSlide 1.1s ease-in-out 1.8s infinite;
+    }
+    @keyframes swipeSlide {
+      0%,100%{ transform:translateX(0); opacity:.5; }
+      50%    { transform:translateX(-8px); opacity:1; }
+    }
+    .swipe-hint-arrow span {
+      display:block; width:6px; height:6px;
+      border-right:1.5px solid var(--amber);
+      border-top:1.5px solid var(--amber);
+      transform:rotate(225deg); opacity:0.7;
+    }
+    .swipe-hint-arrow span:nth-child(2) { opacity:0.5; }
+    .swipe-hint-arrow span:nth-child(3) { opacity:0.25; }
+    .swipe-hint-label {
+      font-family:'Lato', sans-serif;
+      font-size:.66rem; font-weight:500;
+      letter-spacing:4px; text-transform:uppercase;
+      color:var(--amber); opacity:0.6;
+    }
+
+    /* ── PAGE 2: DATE ── */
+    .date-arch {
+      width:min(320px, 86vw);
+      text-align:center;
+      animation:scaleIn .7s ease .1s both;
+      position:relative;
+    }
+    .arch-top {
+      border:1px solid rgba(74,120,88,0.38);
+      border-bottom:none;
+      border-radius:50% 50% 0 0 / 38px 38px 0 0;
+      padding:28px 28px 0;
+    }
+    .arch-body {
+      border:1px solid rgba(74,120,88,0.38);
+      border-top:none;
+      padding:0 28px 28px;
+    }
+    .arch-kicker {
+      font-family:'Lato', sans-serif; font-size:.70rem; font-weight:700;
+      letter-spacing:6px; text-transform:uppercase; color:var(--amber); margin-bottom:16px;
+    }
+    .arch-num {
+      font-family:'Playfair Display', serif;
+      font-size:clamp(5rem,22vw,7rem); font-weight:400;
+      color:var(--ivory); line-height:1;
+    }
+    .arch-month {
+      font-family:'Dancing Script', cursive;
+      font-size:clamp(1.9rem,7.5vw,2.6rem); font-weight:600;
+      color:var(--amber); margin-top:-6px;
+    }
+    .arch-year {
+      font-family:'Lato', sans-serif; font-size:.80rem; font-weight:300;
+      letter-spacing:10px; color:var(--faded); margin-top:6px;
+    }
+    .arch-day {
+      font-family:'Playfair Display', serif; font-style:italic; font-size:1.08rem;
+      font-weight:400; color:var(--faded); margin-top:14px;
+    }
+
+    /* ── PAGE 3: VENUE ── */
+    .venue-block { display:flex; flex-direction:column; align-items:center; animation:scaleIn .7s ease .1s both; }
+    .venue-pre { font-family:'Lato', sans-serif; font-size:.72rem; font-weight:500; letter-spacing:5px; text-transform:uppercase; color:var(--amber); opacity:.8; margin-bottom:12px; }
+    .venue-city {
+      font-family:'Playfair Display', serif;
+      font-style:italic; font-weight:400;
+      font-size:clamp(2.3rem,11vw,3.8rem);
+      color:var(--ivory); line-height:1.1;
+    }
+    .venue-district { font-family:'Lato', sans-serif; font-size:.88rem; font-weight:400; letter-spacing:2px; color:rgba(44,59,46,0.88); margin-top:6px; }
+    .venue-state { font-family:'Lato', sans-serif; font-size:.76rem; font-weight:300; letter-spacing:4px; text-transform:uppercase; color:var(--faded); margin-top:4px; }
+    .venue-pin { font-size:1.4rem; margin-top:18px; opacity:.7; animation:pinFloat 3s ease-in-out infinite; }
+    @keyframes pinFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+    /* ── PAGE 4: DETAILS ── */
+    #page-4 { justify-content:center; padding-top:68px; padding-bottom:68px; }
+    .details-scroll {
+      width:min(540px, 94vw); max-height:calc(100vh - 136px);
+      overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none;
+      display:flex; flex-direction:column; gap:10px; padding:0 6px;
+    }
+    .details-scroll::-webkit-scrollbar { display:none; }
+    .dcard {
+      border:1px solid rgba(74,120,88,0.22); background:rgba(255,255,255,0.50);
+      width:100%; padding:16px 20px 16px 24px; text-align:center;
+      display:flex; align-items:center; justify-content:center; gap:12px;
+      position:relative; animation:slideIn .5s ease calc(var(--i,0)*.1s) both;
+    }
+    .dcard::before {
+      content:''; position:absolute; top:0; left:0;
+      width:2px; height:100%; background:var(--ac, var(--amber)); opacity:.7;
+    }
+    .dc-inner { flex:1; min-width:0; text-align:center; }
+    .dcard-label { font-family:'Lato', sans-serif; font-size:.70rem; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--ac, var(--amber)); margin-bottom:5px; }
+    .dcard-value { font-family:'Playfair Display', serif; font-size:1.38rem; font-weight:500; color:var(--ivory); line-height:1.3; letter-spacing:.3px; }
+    .dcard-sub { font-family:'Lato', sans-serif; font-size:.80rem; font-weight:300; color:var(--faded); margin-top:3px; line-height:1.55; }
+
+    /* ── PAGE 5: SCHEDULE ── */
+    #page-5 { justify-content:center; padding-top:68px; padding-bottom:68px; }
+    .map-btn {
+      flex-shrink:0; width:44px; height:44px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(74,120,88,0.14); border:1.5px solid rgba(74,120,88,0.60);
+      text-decoration:none; transition:background .2s, box-shadow .2s;
+      box-shadow:0 0 0 3px rgba(74,120,88,0.08), 0 0 10px rgba(74,120,88,0.16);
+      animation:mapPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes mapPulse {
+      0%,100% { box-shadow:0 0 0 3px rgba(74,120,88,0.08), 0 0 10px rgba(74,120,88,0.16); }
+      50%      { box-shadow:0 0 0 6px rgba(74,120,88,0.16), 0 0 18px rgba(74,120,88,0.26); }
+    }
+    .map-btn:active { background:rgba(74,120,88,0.26); }
+
+    /* ── PAGE 6-8: PHOTO FRAMES ── */
+    .photo-wrap {
+      width:min(340px, 88vw);
+      animation:scaleIn .65s ease .1s both;
+    }
+    .photo-kicker {
+      font-family:'Lato', sans-serif;
+      font-size:.75rem; font-weight:700; letter-spacing:5px;
+      color:var(--amber); text-transform:uppercase; margin-bottom:12px;
+    }
+    .frame {
+      border:1px solid rgba(74,120,88,0.40);
+      padding:10px; background:rgba(255,255,255,0.65);
+      box-shadow:0 12px 40px rgba(0,0,0,0.09);
+    }
+    .frame img {
+      width:100%; aspect-ratio:4/5; object-fit:cover;
+      display:block; border:1px solid rgba(74,120,88,0.22);
+      background:#d8e8d0;
+    }
+    .img-placeholder {
+      width:100%; aspect-ratio:4/5;
+      display:flex; align-items:center; justify-content:center;
+      border:1px dashed rgba(74,120,88,0.45);
+      background:
+        linear-gradient(145deg, rgba(240,248,238,0.70), rgba(220,240,220,0.40)),
+        repeating-linear-gradient(-45deg, rgba(74,120,88,0.06) 0 12px, rgba(74,120,88,0.02) 12px 24px);
+      color:var(--soft); font-family:'Lato', sans-serif;
+      font-size:.88rem; letter-spacing:3px; text-transform:uppercase;
+    }
+    .photo-caption {
+      margin-top:12px;
+      font-family:'Playfair Display', serif;
+      font-size:1.18rem; font-style:italic; color:var(--soft);
+    }
+
+    /* ── CONTACT DRAWER ── */
+    .drawer {
+      position:fixed; bottom:0; left:0; width:100%; z-index:70;
+      transform:translateY(calc(100% - 50px));
+      transition:transform .4s cubic-bezier(.34,1.1,.64,1);
+    }
+    .drawer.open { transform:translateY(0); }
+    .drawer-handle {
+      background:rgba(235,230,220,0.97); border-top:1px solid var(--aglow);
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      padding:15px; cursor:pointer; user-select:none;
+      font-family:'Lato', sans-serif; font-size:.72rem;
+      font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--amber);
+    }
+    .drawer-arrow { transition:transform .4s; font-size:.80rem; }
+    .drawer.open .drawer-arrow { transform:rotate(180deg); }
+    .drawer-body {
+      background:rgba(246,242,234,0.98); border-top:1px solid rgba(74,120,88,0.14);
+      padding:22px 24px 32px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;
+    }
+    .cpill { border:1px solid rgba(74,120,88,0.24); padding:12px 20px; text-align:center; flex:1; min-width:140px; }
+    .cpill-name { font-family:'Lato', sans-serif; font-size:.72rem; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--amber); margin-bottom:6px; }
+    .cpill-num { font-family:'Playfair Display', serif; font-size:1.18rem; color:var(--ivory); }
+
+    /* ── MOBILE-ONLY SWIPE HINT ── */
+    @media (min-width:769px) { .swipe-hint { display:none; } }
+
+    /* ── MOBILE TUNING ── */
+    @media (max-width:900px) {
+      .page { padding:64px 20px 74px; }
+      .details-scroll { width:min(560px, 96vw); padding:0 4px; }
+      .dcard { padding:16px 16px 16px 20px; }
+    }
+    @media (max-width:520px) {
+      .page { padding:62px 14px 76px; }
+      .page-dots { top:16px; gap:6px; }
+      .dot { width:5px; height:5px; } .dot.active { width:16px; }
+      #back-btn { top:10px; left:12px; width:34px; height:34px; }
+      .details-scroll { width:100%; max-height:calc(100vh - 140px); padding:0; }
+      .dcard { padding:15px 14px 15px 18px; }
+      .dcard-value { font-size:1.26rem; }
+      .map-btn { width:34px; height:34px; }
+      .photo-wrap { width:92vw; }
+      .drawer-handle { letter-spacing:4px; padding:14px; }
+      .drawer-body { padding:18px 14px 24px; }
+      .cpill { min-width:100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div id="page-flash"></div>
+<canvas id="star-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
+
+<div class="page-dots">
+  <div class="dot active" data-page="0"></div>
+  <div class="dot" data-page="1"></div>
+  <div class="dot" data-page="2"></div>
+  <div class="dot" data-page="3"></div>
+  <div class="dot" data-page="4"></div>
+  <div class="dot" data-page="5"></div>
+  <div class="dot" data-page="6"></div>
+  <div class="dot" data-page="7"></div>
+  <div class="dot" data-page="8"></div>
+</div>
+
+<button id="back-btn" onclick="goBack()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <path d="M15 19l-7-7 7-7" stroke="#4A7858" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<!-- PAGE 1: COVER -->
+<section id="page-1" class="page active">
+  <div class="cover-emblem">
+    <svg class="emblem-ring-svg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Rings -->
+      <circle cx="130" cy="130" r="88" fill="none" stroke="rgba(74,120,88,0.16)" stroke-width=".7"/>
+      <circle cx="130" cy="130" r="97" fill="none" stroke="rgba(74,120,88,0.36)" stroke-width="1.1"
+        stroke-dasharray="3 14" stroke-dashoffset="6"/>
+      <circle cx="130" cy="130" r="108" fill="none" stroke="rgba(74,120,88,0.68)" stroke-width="1.2"/>
+      <circle cx="130" cy="130" r="115" fill="none" stroke="rgba(74,120,88,0.32)" stroke-width=".6"/>
+      <circle cx="130" cy="130" r="122" fill="none" stroke="rgba(74,120,88,0.06)" stroke-width="18"/>
+      <!-- Floral petal markers at 45° intervals -->
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.78)" transform="rotate(0 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.78)" transform="rotate(45 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.78)" transform="rotate(90 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.78)" transform="rotate(135 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.60)" transform="rotate(180 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.60)" transform="rotate(225 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.60)" transform="rotate(270 130 130)"/>
+      <ellipse cx="130" cy="15" rx="4" ry="6.5" fill="rgba(74,120,88,0.60)" transform="rotate(315 130 130)"/>
+      <!-- Small tick marks -->
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(22.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(67.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(112.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(157.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(202.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(247.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(292.5 130 130)"/>
+      <line x1="130" y1="23" x2="130" y2="28" stroke="rgba(74,120,88,0.42)" stroke-width=".8" transform="rotate(337.5 130 130)"/>
+    </svg>
+    <div class="emblem-mono">
+      <span class="emblem-text">J</span>
+      <span class="emblem-heart">&#10084;</span>
+      <span class="emblem-text">F</span>
+    </div>
+  </div>
+  <div class="ornament" style="animation:fadeUp .8s ease .15s both;">&mdash; &#10022; &mdash;</div>
+  <h1 class="couple-name">Joshua &amp; Freeda</h1>
+  <p class="invite-line">Together with their families &middot; invite you to celebrate</p>
+  <p class="poem-block">
+    In the warmth of faith and family,<br>
+    two souls found their forever home &mdash;<br>
+    through shared prayers and golden laughter,<br>
+    love bloomed where two hearts chose to roam.
+  </p>
+  <button class="btn" onclick="goToPage(1)">Save the Date</button>
+  <div class="swipe-hint">
+    <div class="swipe-hint-arrow"><span></span><span></span><span></span></div>
+    <div class="swipe-hint-label">Swipe to explore</div>
+  </div>
+</section>
+
+<!-- PAGE 2: DATE -->
+<section id="page-2" class="page">
+  <div class="date-arch">
+    <div class="arch-top">
+      <div class="arch-kicker">Save the Date</div>
+      <div class="amber-line"></div>
+      <div class="arch-num">16</div>
+      <div class="arch-month">May</div>
+    </div>
+    <div class="arch-body">
+      <div class="arch-year">2 0 2 6</div>
+      <div class="amber-line" style="margin-top:16px;"></div>
+      <div class="arch-day">Saturday &nbsp;&middot;&nbsp; A blessed new beginning</div>
+    </div>
+  </div>
+  <button class="btn" onclick="goToPage(2)">The Venue</button>
+</section>
+
+<!-- PAGE 3: VENUE -->
+<section id="page-3" class="page">
+  <div class="venue-block">
+    <div class="venue-pre">We&#39;re getting married in</div>
+    <div class="amber-line"></div>
+    <div class="venue-city">Thuvarankurichi</div>
+    <div class="venue-district">Trichy District &nbsp;&middot;&nbsp; 621314</div>
+    <div class="venue-state">Tamil Nadu &nbsp;&middot;&nbsp; India</div>
+    <div class="amber-line" style="margin-top:14px;"></div>
+    <div class="venue-pin">&#128205;</div>
+  </div>
+  <button class="btn" onclick="goToPage(3)" style="margin-top:16px;">Full Details</button>
+</section>
+
+<!-- PAGE 4: DETAILS -->
+<section id="page-4" class="page">
+  <div class="details-scroll">
+
+    <div class="dcard" style="--i:0;--ac:#4A7858;">
+      <div class="dc-inner">
+        <div class="dcard-label">The Groom</div>
+        <div class="dcard-value">J. Joshua</div>
+        <div class="dcard-sub">Son of Joseph Savari Rajan &amp; Amali Josephine Clara</div>
+      </div>
+    </div>
+
+    <div class="dcard" style="--i:1;--ac:#B56B5A;">
+      <div class="dc-inner">
+        <div class="dcard-label">The Bride</div>
+        <div class="dcard-value">F. Catherin Freeda</div>
+        <div class="dcard-sub">Daughter of Fedalis Xavier &amp; Josephine Sheela</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="goToPage(4)" style="margin-top:8px;">Venue &amp; Schedule</button>
+
+  </div>
+</section>
+
+<!-- PAGE 5: SCHEDULE -->
+<section id="page-5" class="page">
+  <div class="details-scroll">
+
+    <div class="dcard" style="--i:0;--ac:#4A7858;">
+      <div class="dc-inner">
+        <div class="dcard-label">Ceremony</div>
+        <div class="dcard-value">10:00 AM</div>
+        <div class="dcard-sub">St. Joseph&#39;s Church &nbsp;&middot;&nbsp; Thuvarankurichi<br>Tamil Nadu &nbsp;&middot;&nbsp; Saturday, 16 May 2026</div>
+      </div>
+      <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=St+Joseph+Church+Thuvarankurichi+Tamilnadu" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="none" stroke="#4A7858" stroke-width="1.5"/>
+          <circle cx="12" cy="9" r="2.5" fill="#4A7858"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="dcard" style="--i:1;--ac:#5A8C70;">
+      <div class="dc-inner">
+        <div class="dcard-label">Lunch &amp; Reception</div>
+        <div class="dcard-value">12:00 PM</div>
+        <div class="dcard-sub">T.A.S Jamal Mahal &nbsp;&middot;&nbsp; Thuvarankurichi<br>Celebrations to follow</div>
+      </div>
+      <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=TAS+Jamal+Mahal+Thuvarankurichi" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="none" stroke="#5A8C70" stroke-width="1.5"/>
+          <circle cx="12" cy="9" r="2.5" fill="#5A8C70"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- PAGE 6: PHOTO 1 -->
+<section id="page-6" class="page">
+  <div class="photo-wrap">
+    <div class="photo-kicker">Memories</div>
+    <div class="frame">
+      <div class="img-placeholder">Photo Coming Soon</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 7: PHOTO 2 -->
+<section id="page-7" class="page">
+  <div class="photo-wrap">
+    <div class="photo-kicker">Memories</div>
+    <div class="frame">
+      <div class="img-placeholder">Photo Coming Soon</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 8: PHOTO 3 -->
+<section id="page-8" class="page">
+  <div class="photo-wrap">
+    <div class="photo-kicker">Memories</div>
+    <div class="frame">
+      <div class="img-placeholder">Photo Coming Soon</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 9: CLOSING -->
+<section id="page-9" class="page">
+  <div class="photo-wrap">
+    <div class="photo-kicker">A Blessed Union</div>
+    <div style="padding:40px 24px;border:1px solid rgba(74,120,88,0.30);background:rgba(255,255,255,0.65);">
+      <div style="font-size:2.2rem;margin-bottom:16px;">🙏</div>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.65rem;color:var(--ivory);line-height:1.5;margin-bottom:14px;">
+        "What God has joined together, let no one separate."
+      </div>
+      <div style="font-family:'Lato',sans-serif;font-size:.78rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--amber);opacity:.7;">
+        Mark 10:9
+      </div>
+    </div>
+    <div class="photo-caption" style="margin-top:16px;">Thank you for celebrating with us</div>
+  </div>
+</section>
+
+<!-- Contact Drawer -->
+<div class="drawer" id="drawer">
+  <div class="drawer-handle" onclick="toggleDrawer()">
+    Contact &nbsp;<span class="drawer-arrow">&#9650;</span>
+  </div>
+  <div class="drawer-body">
+    <div class="cpill">
+      <div class="cpill-name">Joseph Savari Rajan &nbsp;&middot;&nbsp; Groom&#39;s Father</div>
+      <div class="cpill-num"><a href="tel:+919080493098" style="color:inherit;text-decoration:none;">+91 90804 93098</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── STAR FIELD ──
+  const starCanvas = document.getElementById('star-canvas');
+  const sCtx = starCanvas.getContext('2d');
+  let sW, sH, stars = [];
+
+  function resizeStars() {
+    sW = starCanvas.width = innerWidth;
+    sH = starCanvas.height = innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((sW * sH) / 9000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * sW,
+        y: Math.random() * sH,
+        r: Math.random() * 16 + 8,
+        a: Math.random(),
+        sp: Math.random() * 0.005 + 0.002,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function drawStars(t) {
+    sCtx.clearRect(0, 0, sW, sH);
+    stars.forEach(s => {
+      const alpha = 0.016 + 0.026 * Math.abs(Math.sin(s.phase + t * s.sp * 0.28));
+      sCtx.beginPath();
+      sCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      sCtx.fillStyle = `rgba(100,148,86,${alpha.toFixed(3)})`;
+      sCtx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', () => { resizeStars(); initStars(); });
+  resizeStars(); initStars();
+  requestAnimationFrame(drawStars);
+
+  // ── LILY VINE PARTICLES ──
+  const pCanvas = document.getElementById('particle-canvas');
+  const pCtx = pCanvas.getContext('2d');
+  let pW, pH, particles = [];
+
+  function resizeP() { pW = pCanvas.width = innerWidth; pH = pCanvas.height = innerHeight; }
+  window.addEventListener('resize', resizeP); resizeP();
+
+  // Lily vine particles
+  class Particle {
+    constructor(burst) {
+      this.type     = Math.random() < 0.62 ? 'lily' : 'leaf';
+      this.size     = this.type === 'lily' ? (Math.random() * 5 + 7) : (Math.random() * 4 + 5);
+      this.stemLen  = this.size * (Math.random() * 0.8 + 1.2);
+      this.alpha    = 1;
+      if (burst) {
+        const ang = Math.random() * Math.PI * 2;
+        const sp  = Math.random() * 8 + 3;
+        this.x = pW/2 + (Math.random()-.5)*80; this.y = pH/2 + (Math.random()-.5)*80;
+        this.vx = Math.cos(ang)*sp; this.vy = Math.sin(ang)*sp - 4;
+        this.gravity = .10; this.fade = .013;
+      } else {
+        this.x = Math.random() * pW; this.y = -22;
+        this.vx = (Math.random() - .5) * .65; this.vy = Math.random() * .34 + .16;
+        this.gravity = .0016; this.fade = .0020;
+      }
+      this.rot     = Math.random() * Math.PI * 2;
+      this.rotSp   = (Math.random() - .5) * .020;
+      this.drag    = .995;
+      this.swingPh = Math.random() * Math.PI * 2;
+      this.swingAm = Math.random() * 0.48 + 0.18;
+    }
+    tick() {
+      this.swingPh += 0.034;
+      this.x += this.vx + Math.sin(this.swingPh) * this.swingAm * 0.22;
+      this.y += this.vy;
+      this.vy += this.gravity;
+      this.vx *= this.drag;
+      this.rot += this.rotSp;
+      this.alpha -= this.fade;
+    }
+    draw() {
+      pCtx.save();
+      pCtx.globalAlpha = Math.max(0, this.alpha);
+      pCtx.translate(this.x, this.y);
+      pCtx.rotate(this.rot);
+      const s = this.size, a = this.alpha;
+      if (this.type === 'lily') {
+        // Curved vine stem
+        pCtx.strokeStyle = `rgba(58,98,66,${(a * 0.66).toFixed(2)})`;
+        pCtx.lineWidth = 1.1;
+        pCtx.beginPath();
+        pCtx.moveTo(0, s * 0.38);
+        pCtx.bezierCurveTo(s * 0.22, s * 0.90, -s * 0.14, s * 1.35, 0, this.stemLen);
+        pCtx.stroke();
+        // 6 lily petals
+        for (let i = 0; i < 6; i++) {
+          pCtx.save();
+          pCtx.rotate((i / 6) * Math.PI * 2);
+          pCtx.fillStyle = i % 2 === 0
+            ? `rgba(255,253,246,${(a * 0.94).toFixed(2)})`
+            : `rgba(240,228,210,${(a * 0.86).toFixed(2)})`;
+          pCtx.beginPath();
+          pCtx.ellipse(0, -s * 0.74, s * 0.27, s * 0.60, 0, 0, Math.PI * 2);
+          pCtx.fill();
+          pCtx.restore();
+        }
+        // Golden centre
+        pCtx.fillStyle = `rgba(200,168,90,${(a * 0.90).toFixed(2)})`;
+        pCtx.beginPath();
+        pCtx.arc(0, 0, s * 0.18, 0, Math.PI * 2);
+        pCtx.fill();
+      } else {
+        // Vine leaf
+        pCtx.fillStyle = `rgba(74,120,88,${(a * 0.48).toFixed(2)})`;
+        pCtx.beginPath();
+        pCtx.ellipse(0, 0, s * 0.36, s * 0.72, 0, 0, Math.PI * 2);
+        pCtx.fill();
+        // Centre vein
+        pCtx.strokeStyle = `rgba(48,86,58,${(a * 0.30).toFixed(2)})`;
+        pCtx.lineWidth = 0.7;
+        pCtx.beginPath();
+        pCtx.moveTo(0, -s * 0.68); pCtx.lineTo(0, s * 0.68);
+        pCtx.stroke();
+      }
+      pCtx.restore();
+    }
+  }
+
+  function burst() { for (let i=0;i<48;i++) particles.push(new Particle(true)); }
+  // Lily flowers & leaves drifting down on cover page
+  setInterval(() => { if (currentPage === 0) particles.push(new Particle(false)); }, 520);
+
+  (function pLoop() {
+    pCtx.clearRect(0,0,pW,pH);
+    particles = particles.filter(p => p.alpha > 0 && p.y < pH+30);
+    particles.forEach(p => { p.tick(); p.draw(); });
+    requestAnimationFrame(pLoop);
+  })();
+
+  // ── PAGES ──
+  const pages = ['page-1','page-2','page-3','page-4','page-5','page-6','page-7','page-8','page-9'];
+  const dots  = document.querySelectorAll('.dot');
+  let currentPage = 0, transitioning = false;
+  let touchStartX = 0, touchStartY = 0;
+
+  function flashPage() {
+    const f = document.getElementById('page-flash');
+    f.classList.add('lit');
+    setTimeout(() => f.classList.remove('lit'), 220);
+  }
+
+  function goToPage(idx) {
+    if (idx === currentPage || transitioning) return;
+    if (idx < 0 || idx >= pages.length) return;
+    transitioning = true; burst(); flashPage();
+    const direction = idx > currentPage ? 'forward' : 'back';
+    const old = document.getElementById(pages[currentPage]);
+    const nxt = document.getElementById(pages[idx]);
+
+    nxt.querySelectorAll('[style*="--i"]').forEach(el => {
+      el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+    });
+
+    old.classList.add(direction === 'forward' ? 'leaving-up' : 'leaving-down');
+    old.classList.remove('active');
+
+    nxt.classList.add('active', direction === 'forward' ? 'from-below' : 'from-above');
+    requestAnimationFrame(() => {
+      nxt.classList.remove('from-below', 'from-above');
+    });
+
+    setTimeout(() => {
+      old.classList.remove('leaving-up', 'leaving-down');
+      currentPage = idx; updateUI(); transitioning = false;
+    }, 670);
+  }
+
+  function goBack() { if (currentPage > 0) goToPage(currentPage - 1); }
+
+  function updateUI() {
+    dots.forEach((d,i) => d.classList.toggle('active', i === currentPage));
+    document.getElementById('back-btn').classList.toggle('visible', currentPage > 0);
+    const drawer = document.getElementById('drawer');
+    drawer.style.display = (currentPage === 4 || currentPage === 8) ? '' : 'none';
+    if (currentPage !== 4 && currentPage !== 8) drawer.classList.remove('open');
+  }
+
+  function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
+
+  dots.forEach(d => d.addEventListener('click', () => goToPage(+d.dataset.page)));
+
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (transitioning || !touchStartX) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    touchStartX = 0; touchStartY = 0;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+    if (dx < 0) goToPage(Math.min(currentPage + 1, pages.length - 1));
+    else goToPage(Math.max(currentPage - 1, 0));
+  }, { passive: true });
+
+  updateUI();
+</script>
+</body>
+</html>
